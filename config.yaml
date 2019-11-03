@@ -1,0 +1,7 @@
+port: 8888
+database:
+  host: localhost
+  port: 5432
+  databaseName: "aque_base"
+  username: "rhymelph"
+  password: "123456"
