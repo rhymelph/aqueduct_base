@@ -14,7 +14,6 @@
 
 - 4.请求登录，刷新token时，必须在请求头添加`authorization: Basic base64(id:secret)`进行请求，否则出现无效客户端
 
-- 5.
 
 ## 目前已实现
 - [o]用户登录
@@ -27,4 +26,4 @@
 
 - 微信订阅号：`Dart客栈`
 
-- 请关注我的[简书](https://www.jianshu.com/u/0c89c7e04e7a)
+- 请关注我的：[简书](https://www.jianshu.com/u/0c89c7e04e7a)
