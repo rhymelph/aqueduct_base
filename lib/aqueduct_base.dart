@@ -10,4 +10,5 @@ export 'package:aqueduct/aqueduct.dart';
 
 export 'channel.dart';
 
+export 'src/common/pretty_logging.dart';
 export 'src/common/result.dart';

@@ -4,6 +4,7 @@ import 'package:aqueduct_base/src/controller/user_controller.dart';
 
 import 'aqueduct_base.dart';
 import 'src/common/app_config.dart';
+import 'src/common/pretty_logging.dart';
 import 'src/controller/authorizer_controller.dart';
 import 'src/entity/user.dart';
 
@@ -37,20 +38,16 @@ class AqueductBaseChannel extends ApplicationChannel {
     _authServer = AuthServer(delegate);
 
     /********************** 打印日志 **********************/
-
-    logger.onRecord.listen((rec) =>
-        print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}")); //打印日志
-
-
+    logger.onRecord.listen(prettyLog); //打印日志
   }
 
   @override
-  Controller get entryPoint =>
-      Router()
-        ..route("/article/[:name]")
-            .link(() => AuthorizerController(_authServer))
-            .link(() => ArticleController(context))
-        ..route("/user/[:name]").link(
-              () => UserController(context, _authServer),
-        );
+  Controller get entryPoint => Router()
+    ..route('/example').linkFunction((res) => Response.ok({'ok': 'hello'}))
+    ..route("/article/[:name]")
+        .link(() => AuthorizerController(_authServer))
+        .link(() => ArticleController(context))
+    ..route("/user/[:name]").link(
+      () => UserController(context, _authServer),
+    );
 }
