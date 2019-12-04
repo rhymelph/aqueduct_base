@@ -38,7 +38,7 @@ class AqueductBaseChannel extends ApplicationChannel {
     _authServer = AuthServer(delegate);
 
     /********************** 打印日志 **********************/
-    logger.onRecord.listen(prettyLog); //打印日志
+    logger.onRecord.listen(prettyLog);
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:aqueduct/aqueduct.dart';
+import 'package:aqueduct_base/src/common/error.dart';
 
 class Result {
   static dynamic _formatBody(dynamic data) {
@@ -32,4 +33,6 @@ class Result {
       ok(msg, code);
 
   static Response successMsg([String msg = 'success']) => ok(msg, 0);
+
+  static Response error(Error error)=>ok(error.message,error.code);
 }

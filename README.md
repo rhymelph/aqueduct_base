@@ -12,7 +12,7 @@
 
 - 3.使用命令`aqueduct auth add-client --id com.rhyme.web --secret 123456`生成授权客户端，（--id 你的客户端id --secret 你的密钥）
 
-- 4.请求登录，刷新token时，必须在请求头添加`authorization: Basic base64(id:secret)`进行请求，否则出现无效客户端
+- 4.请求`登录`，`注册`和`刷新token`时，必须在请求头添加`authorization: Basic base64(id:secret)`进行请求，否则出现无效客户端
 
 - 5.使用命令`dart --observe bin/main.dart`运行项目
 ## 目前已实现
@@ -31,4 +31,5 @@
 
 ## ChANGE_LOG
 
-- 1.添加不同颜色的log输出
+- 2019.12.04：添加不同颜色的log输出
+- 2019.12.04：统一错误码

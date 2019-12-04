@@ -48,7 +48,7 @@ class UserController extends ResourceController {
     final user = await query.fetchOne();
 
     if (user == null) {
-      return Result.errorMsg("用户不存在或密码错误!");
+      return Result.error(Error.loginPwdError);
     }
 
     try {
@@ -64,7 +64,7 @@ class UserController extends ResourceController {
         "user": await query.updateOne(),
       });
     } on AuthServerException catch (_) {
-      return Result.errorMsg("用户不存在或密码错误!");
+      return Result.error(Error.loginPwdError);
     }
   }
 
@@ -74,10 +74,18 @@ class UserController extends ResourceController {
     final username = body['username'] as String;
 
     if (password == null || password.isEmpty) {
-      return Result.errorMsg("请输入密码");
+      return Result.error(Error.pleaseEditPwd);
     }
     if (username == null || username.isEmpty) {
-      return Result.errorMsg("请输入手机号");
+      return Result.error(Error.pleaseEditPhone);
+    }
+
+    AuthBasicCredentials basicRecord;
+    const _parser = AuthorizationBasicParser();
+    try {
+      basicRecord = _parser.parse(authHeader);
+    } on AuthorizationParserException catch (_) {
+      return Utils.handlerAuthError();
     }
 
     final user = User()
@@ -91,7 +99,7 @@ class UserController extends ResourceController {
     )..where((user) => user.username).equalTo(username);
     final existUser = await query.fetchOne();
     if (existUser != null) {
-      return Result.errorMsg("用户已存在!");
+      return Result.error(Error.userExists);
     } else {
       query.values = user;
       await query.insert();
@@ -104,10 +112,10 @@ class UserController extends ResourceController {
     final password = body['password'] as String;
     final username = body['username'] as String;
     if (password == null || password.isEmpty) {
-      return Result.errorMsg("请输入密码");
+      return Result.error(Error.pleaseEditPwd);
     }
     if (username == null || username.isEmpty) {
-      return Result.errorMsg("请输入手机号");
+      return Result.error(Error.pleaseEditPhone);
     }
     final user = User()
       ..username = username
@@ -119,7 +127,7 @@ class UserController extends ResourceController {
       ..where((item) => item.username).equalTo(user.username);
 
     if (await query.fetchOne() == null) {
-      return Result.errorMsg("用户不存在!");
+      return Result.error(Error.userNoExists);
     } else {
       await query.updateOne();
       return Result.successMsg("更新成功");
@@ -129,6 +137,7 @@ class UserController extends ResourceController {
   FutureOr<Response> refreshToken() async {
     final body = await request.body.decode();
     final refreshToken = body['refreshToken'] as String;
+
     AuthBasicCredentials basicRecord;
     const _parser = AuthorizationBasicParser();
     try {
